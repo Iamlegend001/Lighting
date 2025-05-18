@@ -66,18 +66,6 @@ function App() {
     return "bg-gradient-to-b from-blue-900 to-purple-900"; // Night
   };
 
-  // Calculate text gradient based on mode
-  const getTextGradient = () => {
-    switch (currentMode) {
-      case "focus":
-        return "bg-gradient-to-r from-blue-400 to-purple-500";
-      case "night":
-        return "bg-gradient-to-r from-blue-300 to-purple-400";
-      default:
-        return "bg-gradient-to-r from-blue-500 to-cyan-400";
-    }
-  };
-
   // Calculate brightness filter with mode adjustments
   const getBrightnessFilter = () => {
     let brightnessValue = brightness / 100;
@@ -151,10 +139,22 @@ function App() {
           <button
             onClick={() => setIsFocusMode(!isFocusMode)}
             className={`fixed bottom-8 right-8 px-6 py-3 rounded-lg transition-all duration-300 backdrop-blur-sm
-              ${getTextGradient()} bg-clip-text text-transparent
-              hover:scale-105 hover:shadow-lg hover:shadow-blue-500/30
-              border border-white/20 hover:border-white/40`}
-            style={{ filter: getBrightnessFilter() }}
+              ${
+                isFocusMode
+                  ? brightness < 30
+                    ? "bg-gradient-to-r from-indigo-700 to-purple-800 text-white shadow-lg shadow-indigo-500/30"
+                    : "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/30"
+                  : brightness < 30
+                  ? "bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-lg shadow-blue-500/30"
+                  : "bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg shadow-blue-500/30"
+              }
+              hover:scale-105 hover:shadow-xl
+              border border-white/20 hover:border-white/40
+              font-medium tracking-wide`}
+            style={{
+              filter: getBrightnessFilter(),
+              textShadow: "0 0 10px rgba(255, 255, 255, 0.3)",
+            }}
           >
             {isFocusMode ? "Exit Focus Mode" : "Enter Focus Mode"}
           </button>
